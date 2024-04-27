@@ -1,0 +1,5 @@
+@startuml
+Client -> Server : "Join Game"
+Client <-- Server : "Fuck you"
+
+@enduml
