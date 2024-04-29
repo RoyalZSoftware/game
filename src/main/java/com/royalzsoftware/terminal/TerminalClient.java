@@ -1,24 +1,37 @@
 package com.royalzsoftware.terminal;
 
 import java.io.IOException;
+import java.util.HashMap;
 
+import com.royalzsoftware.authentication.InvalidCredentialsException;
+import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
 import com.royalzsoftware.socket.Client;
+import com.royalzsoftware.socket.EventStreamClient;
 
 public class TerminalClient {
     public TerminalClient() {
         Client client = new Client("localhost", 8000);
 
-        Request request = new Request("listgames");
-        Request createGame = new Request("creategame");
+        String username = "Alex";
+        String[] params = {username};
+
+        Request request = new Request("login", params, new HashMap<>());
 
         try {
-            Response createGameResponse = client.Send(createGame);
-            System.out.println(createGameResponse.serialize());
-
             Response response = client.Send(request);
-            System.out.println(response.serialize());
+            if (response.status == 102) {
+                String password = response.payload;
+                EventStreamClient eventStreamClient = new EventStreamClient("localhost", 8001);
+                try {
+                    eventStreamClient.connect(username, password);
+                } catch (InvalidRequestException | InvalidCredentialsException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                throw new IOException("Server did not return 102");
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }

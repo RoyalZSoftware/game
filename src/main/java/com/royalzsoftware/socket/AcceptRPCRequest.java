@@ -40,7 +40,7 @@ public class AcceptRPCRequest implements Runnable {
                     
                     out.println(response.serialize());
                 } catch (InvalidRequestException e) {
-                    out.println(new Response(101, "Invalid command").serialize());
+                    out.println(new Response(101, "Invalid command usage.").serialize());
                     e.printStackTrace();
                 } catch (CommandNotFoundException e) {
                     out.println(new Response(102, "Command not found").serialize());

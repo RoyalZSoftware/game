@@ -18,6 +18,12 @@ public class EventBroker {
         subscriber.eventReceived(event);
     }
 
+    public void publish(Event event, Iterable<Subscriber> subscribers) {
+        for (Subscriber subscriber: subscribers) {
+            publish(event, subscriber);
+        }
+    }
+
     public void subscribe(Subscriber subscriber) {
         this.subscribers.add(subscriber);
     }

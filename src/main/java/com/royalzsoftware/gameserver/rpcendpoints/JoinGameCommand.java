@@ -1,7 +1,6 @@
 package com.royalzsoftware.gameserver.rpcendpoints;
 
 import com.royalzsoftware.domain.Game;
-import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.gameserver.GameRepository;
 import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.InvalidRequestException;
@@ -9,11 +8,9 @@ import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
 
 public class JoinGameCommand implements Command {
-    private final EventBroker broker;
     private final GameRepository gameRepository;
 
-    public JoinGameCommand(EventBroker eventBroker, GameRepository gameRepository) {
-        this.broker = eventBroker;
+    public JoinGameCommand(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
     }
 
