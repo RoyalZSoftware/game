@@ -3,7 +3,9 @@ package com.royalzsoftware.gameserver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.royalzsoftware.domain.Player;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.gameserver.rpcendpoints.CreateGameCommand;
@@ -19,15 +21,10 @@ public class GameServer {
 
     class TestEvent implements Event {
 
-    @Override
-    public String getIdentifier() {
-        return "test";
-    }
-
-    @Override
-    public String serialize() {
-        return "test";
-    }
+        @Override
+        public String getIdentifier() {
+            return "test";
+        }
 
     }
 
@@ -45,7 +42,12 @@ public class GameServer {
             while (true) {
                 try {
                     System.out.println("Sending");
-                    eventBroker.publish(new TestEvent());
+                    Optional<Player> player = Player.players.stream().findFirst();
+                    if (player.isPresent()) {
+                        eventBroker.publish(new TestEvent(), player.get().subscriber);
+                    } else {
+
+                    }
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

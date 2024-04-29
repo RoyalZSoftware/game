@@ -9,12 +9,12 @@ import java.net.Socket;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
 
-public class Client {
+public class RPCClient {
 
     private String host;
     private int port;
 
-    public Client(String host, int port) {
+    public RPCClient(String host, int port) {
         this.host = host;
         this.port = port;
     }
@@ -30,19 +30,3 @@ public class Client {
         return Response.deserialize(serverResponse);
     }
 }
-
-
-// Client client = new Client(serverURl);
-// Response response = client.Send(new JoinRequest('gameId'))
-
-/*
- * Client:
- *   neue Property: sentCommands
- * sendCommand() {
- * }
- * awaitOnResponse(id) {
- * }
- * Client: onMessageReceive(receivedMessageId) {
- *      this.sentCommands.filter(c => c.id === receivedMessageId)
- * }
- */

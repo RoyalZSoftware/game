@@ -23,6 +23,6 @@ public class Game {
     }
 
     private void notifyGamePlayers(Event event) {
-        this.broker.publish(event, players.stream().map(p -> p.subscriber).toList());
+        this.broker.publish(event/* , players.stream().map(p -> p.subscriber).toList()*/);
     }
 }

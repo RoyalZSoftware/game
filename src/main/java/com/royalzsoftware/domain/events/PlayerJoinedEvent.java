@@ -13,11 +13,6 @@ public class PlayerJoinedEvent implements Event {
 
     @Override
     public String getIdentifier() {
-        return "playerjoined";
-    }
-
-    @Override
-    public String serialize() {
-        return "playerjoined";
+        return "playerjoined" + this.player.username;
     }
 }

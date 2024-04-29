@@ -7,9 +7,9 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.royalzsoftware.authentication.InvalidCredentialsException;
 import com.royalzsoftware.authentication.PlayerLoginAttempt;
 import com.royalzsoftware.domain.Player;
+import com.royalzsoftware.domain.events.PlayerJoinedEvent;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.rpc.Response;
 
@@ -51,19 +51,19 @@ public class AcceptSubscribers implements Runnable {
                         continue;
                     }
 
-                    try {
-                        Player player =attempt.markAsDone(new PlayerSocketSubscriber(writer), parts[1]);
-                        
-                        new User(player, socket);
-                        broker.subscribe(player.subscriber);
-                        writer.println(new Response(0, "OK").serialize());
-                        loggedIn = true;
-                        continue;
-                    } catch (InvalidCredentialsException ex) {
-                        ex.printStackTrace();
+                    if (!attempt.checkPassword(parts[1])) {
                         writer.println(new Response(107, "Invalid credentials").serialize());
                         continue;
                     }
+
+                    Player player = new Player(parts[0], new PrintWriterSubscriber(writer));
+
+                    broker.subscribe(player.subscriber);
+
+                    writer.println(new Response(0, "OK").serialize());
+                    broker.publish(new PlayerJoinedEvent(player));
+                    loggedIn = true;
+                    continue;
                 }
             } catch (IOException exception) {
                 exception.printStackTrace();

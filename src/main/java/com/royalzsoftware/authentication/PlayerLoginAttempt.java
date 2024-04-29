@@ -37,12 +37,12 @@ public class PlayerLoginAttempt {
         return this.password;
     }
 
-    public Player markAsDone(Subscriber subscriber, String password) throws InvalidCredentialsException {
+    public boolean checkPassword(String password) {
         /*
         if (password != this.password) {
             throw new InvalidCredentialsException();
         }
         */
-        return new Player(username, subscriber);
+        return true;
     }
 }
