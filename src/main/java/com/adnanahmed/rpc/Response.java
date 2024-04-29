@@ -12,4 +12,9 @@ public class Response {
     public String serialize() {
         return this.status + ";" + this.payload;
     }
+
+    public static Response deserialize(String serialized) {
+        String[] parts = serialized.split(";");
+        return new Response(Integer.parseInt(parts[0]), parts[1]);
+    }
 }

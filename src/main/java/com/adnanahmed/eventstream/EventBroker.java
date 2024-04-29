@@ -14,6 +14,10 @@ public class EventBroker {
         }
     }
 
+    public void publish(Event event, Subscriber subscriber) {
+        subscriber.eventReceived(event);
+    }
+
     public void subscribe(Subscriber subscriber) {
         this.subscribers.add(subscriber);
     }
