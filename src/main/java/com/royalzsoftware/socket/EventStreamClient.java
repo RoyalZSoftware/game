@@ -34,12 +34,15 @@ public class EventStreamClient {
             Response response = Response.deserialize(res);
 
             if (response.status == 1) {
+                socket.close();
                 throw new InvalidRequestException();
             }
             if (response.status == 106) {
+                socket.close();
                 throw new InvalidCredentialsException();
             }
             if (response.status == 107) {
+                socket.close();
                 throw new InvalidCredentialsException();
             }
 
@@ -49,6 +52,7 @@ public class EventStreamClient {
             while ((serverLine = in.readLine()) != null) {
                 System.out.println(serverLine);
             }
+            socket.close();
         } catch(IOException ex) {
             ex.printStackTrace();
         }

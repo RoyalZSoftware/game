@@ -14,7 +14,7 @@ import com.royalzsoftware.gameserver.rpcendpoints.ListGamesCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.LoginCommand;
 import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.CommandRouter;
-import com.royalzsoftware.socket.CommandServer;
+import com.royalzsoftware.socket.RPCServer;
 import com.royalzsoftware.socket.EventStreamServer;
 
 public class GameServer {
@@ -60,7 +60,7 @@ public class GameServer {
         CommandRouter router = new CommandRouter(commands);
 
         try {
-            CommandServer rpcServer = new CommandServer(8000, router);
+            RPCServer rpcServer = new RPCServer(8000, router);
             rpcServer.listenInThread();
         } catch (IOException ex) {
             ex.printStackTrace();

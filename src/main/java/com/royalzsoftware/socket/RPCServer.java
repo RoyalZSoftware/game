@@ -1,26 +1,33 @@
 package com.royalzsoftware.socket;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.ServerSocket;
+
+import com.royalzsoftware.rpc.CommandRouter;
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.royalzsoftware.rpc.CommandNotFoundException;
-import com.royalzsoftware.rpc.CommandRouter;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
 
-public class AcceptRPCRequest implements Runnable {
+public class RPCServer implements Runnable {
 
-    private final ServerSocket serverSocket;
-    private final CommandRouter router;
+    private ServerSocket serverSocket;
+    private CommandRouter router;
 
-    public AcceptRPCRequest(ServerSocket serverSocket, CommandRouter router) {
-        this.serverSocket = serverSocket;
+    public RPCServer(int port, CommandRouter router) throws IOException {
+        this.serverSocket = new ServerSocket(port);
         this.router = router;
+    }
+
+    public void listenInThread() {
+        Thread acceptThread = new Thread(this);
+
+        acceptThread.start();
     }
 
     @Override
@@ -37,7 +44,7 @@ public class AcceptRPCRequest implements Runnable {
                     Request request = Request.deserialize(stringifiedRequest);
 
                     Response response = this.router.handle(request);
-                    
+
                     out.println(response.serialize());
                 } catch (InvalidRequestException e) {
                     out.println(new Response(101, "Invalid command usage.").serialize());
