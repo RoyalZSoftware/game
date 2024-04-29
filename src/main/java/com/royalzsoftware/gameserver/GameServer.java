@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.royalzsoftware.authentication.INotifiablePlayer;
+import com.royalzsoftware.authentication.Authenticatable;
 import com.royalzsoftware.domain.Player;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
@@ -42,12 +42,12 @@ public class GameServer {
         Thread spam = new Thread(() -> {
             while (true) {
                 try {
-                    System.out.println("Sending");
-                    Optional<INotifiablePlayer> player = INotifiablePlayer.notifiablePlayers.values().stream().findFirst();
+                    Optional<Authenticatable> player = Authenticatable.authenticatables.stream().findFirst();
                     if (player.isPresent()) {
+                        System.out.println("Sending");
                         eventBroker.publish(new TestEvent(), player.get().getSubscriber());
                     } else {
-
+                        System.out.println("Not sending");
                     }
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {

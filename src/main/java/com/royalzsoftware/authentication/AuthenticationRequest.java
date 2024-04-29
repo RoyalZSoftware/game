@@ -3,38 +3,28 @@ package com.royalzsoftware.authentication;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.royalzsoftware.eventstream.Subscriber;
-
 public class AuthenticationRequest {
     
-    public static List<AuthenticationRequest> PlayerLogins = new ArrayList<>();
+    public static List<AuthenticationRequest> AuthenticationRequests = new ArrayList<>();
 
-    public static AuthenticationRequest FindLoginAttempt(String username) {
-        return PlayerLogins.stream().filter(t -> t.username.equalsIgnoreCase(username)).findFirst().get();
+    public static AuthenticationRequest FindLoginAttempt(String identifier) {
+        return AuthenticationRequests.stream().filter(t -> t.authenticatable.getIdentifier().equalsIgnoreCase(identifier)).findFirst().get();
     }
 
-    private final String username;
-    private final String password;
-    private final INotifiablePlayerFactory factory;
+    private final Authenticatable authenticatable;
 
-    public AuthenticationRequest(String username, String password, INotifiablePlayerFactory factory) throws UsernameAlreadyInUseException {
-        if (PlayerLogins.stream().filter(t -> t.username == username).findFirst().isPresent()) {
+    public AuthenticationRequest(Authenticatable authenticatable, String password) throws UsernameAlreadyInUseException {
+        if (AuthenticationRequests.stream().filter(t -> t.authenticatable.getIdentifier() == authenticatable.getIdentifier()).findFirst().isPresent()) {
             throw new UsernameAlreadyInUseException();
         }
 
-        this.factory = factory;
-        this.username = username;
-        this.password = password;
+        this.authenticatable = authenticatable;
 
-        PlayerLogins.add(this);
+        AuthenticationRequests.add(this);
     }
 
-    public String getUsername() {
-        return this.username;
-    }
-
-    public String getPassword() {
-        return this.password;
+    public Authenticatable getAuthenticatable() {
+        return this.authenticatable;
     }
 
     public boolean checkPassword(String password) {
@@ -44,9 +34,5 @@ public class AuthenticationRequest {
         }
         */
         return true;
-    }
-
-    public INotifiablePlayer buildNotifablePlayer(Subscriber subscriber) {
-        return this.factory.create(this.username, subscriber);
     }
 }

@@ -1,18 +1,18 @@
 package com.royalzsoftware.domain.events;
 
-import com.royalzsoftware.domain.Player;
+import com.royalzsoftware.authentication.Authenticatable;
 import com.royalzsoftware.eventstream.Event;
 
 public class PlayerJoinedEvent implements Event {
 
-    public Player player;
+    public Authenticatable player;
 
-    public PlayerJoinedEvent(Player player) {
+    public PlayerJoinedEvent(Authenticatable player) {
         this.player = player;
     }
 
     @Override
     public String getIdentifier() {
-        return "playerjoined" + this.player.username;
+        return "playerjoined" + this.player.getIdentifier();
     }
 }

@@ -1,22 +1,27 @@
 package com.royalzsoftware.domain;
 
-import com.royalzsoftware.authentication.INotifiablePlayer;
+import com.royalzsoftware.authentication.Authenticatable;
 import com.royalzsoftware.eventstream.Subscriber;
 
-public class Player implements INotifiablePlayer {
+public class Player implements Authenticatable {
     
 
     public final String username;
-    public Subscriber subscriber;
+    private Subscriber subscriber;
 
-    public Player(String username, Subscriber subscriber) {
+    public Player(String username) {
         this.username = username;
-        this.subscriber = subscriber;
+        Authenticatable.Register(this);
     }
 
     @Override
     public String getIdentifier() {
         return this.username;
+    }
+
+    @Override
+    public void setSubscriber(Subscriber subscriber) {
+        this.subscriber = subscriber;
     }
 
     @Override

@@ -8,8 +8,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.royalzsoftware.authentication.Authenticatable;
 import com.royalzsoftware.authentication.AuthenticationRequest;
-import com.royalzsoftware.authentication.INotifiablePlayer;
+import com.royalzsoftware.domain.events.PlayerJoinedEvent;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.eventstream.Subscriber;
@@ -68,25 +69,28 @@ public class EventStreamServer implements Runnable {
                         continue;
                     }
 
-                    AuthenticationRequest attempt = AuthenticationRequest.FindLoginAttempt(parts[0]);
+                    AuthenticationRequest loginRequest = AuthenticationRequest.FindLoginAttempt(parts[0]);
 
-                    if (attempt == null) {
+                    if (loginRequest == null) {
                         writer.println(new Response(106, "Login attempt not found.").serialize());
                         continue;
                     }
 
-                    if (!attempt.checkPassword(parts[1])) {
+                    if (!loginRequest.checkPassword(parts[1])) {
                         writer.println(new Response(107, "Invalid credentials").serialize());
                         continue;
                     }
 
-                    INotifiablePlayer player = attempt.buildNotifablePlayer(new PrintWriterSubscriber(writer));
+                    Authenticatable authenticatable = loginRequest.getAuthenticatable();
+                    Subscriber subscriber = new PrintWriterSubscriber(writer);
 
-                    INotifiablePlayer.notifiablePlayers.put(parts[0], player);
+                    authenticatable.setSubscriber(subscriber);
 
-                    broker.subscribe(player.getSubscriber());
+                    broker.subscribe(subscriber);
 
                     writer.println(new Response(0, "OK").serialize());
+
+                    broker.publish(new PlayerJoinedEvent(authenticatable));
                     loggedIn = true;
                     continue;
                 }
