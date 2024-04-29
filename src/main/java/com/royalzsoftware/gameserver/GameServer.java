@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.royalzsoftware.authentication.INotifiablePlayer;
 import com.royalzsoftware.domain.Player;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
@@ -42,9 +43,9 @@ public class GameServer {
             while (true) {
                 try {
                     System.out.println("Sending");
-                    Optional<Player> player = Player.players.stream().findFirst();
+                    Optional<INotifiablePlayer> player = INotifiablePlayer.notifiablePlayers.values().stream().findFirst();
                     if (player.isPresent()) {
-                        eventBroker.publish(new TestEvent(), player.get().subscriber);
+                        eventBroker.publish(new TestEvent(), player.get().getSubscriber());
                     } else {
 
                     }

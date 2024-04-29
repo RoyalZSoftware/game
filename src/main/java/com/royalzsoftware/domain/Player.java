@@ -1,13 +1,10 @@
 package com.royalzsoftware.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.royalzsoftware.authentication.INotifiablePlayer;
 import com.royalzsoftware.eventstream.Subscriber;
 
-public class Player {
+public class Player implements INotifiablePlayer {
     
-    public static List<Player> players = new ArrayList<Player>();
 
     public final String username;
     public Subscriber subscriber;
@@ -15,6 +12,15 @@ public class Player {
     public Player(String username, Subscriber subscriber) {
         this.username = username;
         this.subscriber = subscriber;
-        players.add(this);
+    }
+
+    @Override
+    public String getIdentifier() {
+        return this.username;
+    }
+
+    @Override
+    public Subscriber getSubscriber() {
+        return this.subscriber;
     }
 }

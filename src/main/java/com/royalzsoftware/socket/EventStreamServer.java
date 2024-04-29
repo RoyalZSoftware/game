@@ -8,9 +8,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import com.royalzsoftware.authentication.PlayerLoginAttempt;
-import com.royalzsoftware.domain.Player;
-import com.royalzsoftware.domain.events.PlayerJoinedEvent;
+import com.royalzsoftware.authentication.AuthenticationRequest;
+import com.royalzsoftware.authentication.INotifiablePlayer;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.eventstream.Subscriber;
@@ -69,7 +68,7 @@ public class EventStreamServer implements Runnable {
                         continue;
                     }
 
-                    PlayerLoginAttempt attempt = PlayerLoginAttempt.FindLoginAttempt(parts[0]);
+                    AuthenticationRequest attempt = AuthenticationRequest.FindLoginAttempt(parts[0]);
 
                     if (attempt == null) {
                         writer.println(new Response(106, "Login attempt not found.").serialize());
@@ -81,12 +80,13 @@ public class EventStreamServer implements Runnable {
                         continue;
                     }
 
-                    Player player = new Player(parts[0], new PrintWriterSubscriber(writer));
+                    INotifiablePlayer player = attempt.buildNotifablePlayer(new PrintWriterSubscriber(writer));
 
-                    broker.subscribe(player.subscriber);
+                    INotifiablePlayer.notifiablePlayers.put(parts[0], player);
+
+                    broker.subscribe(player.getSubscriber());
 
                     writer.println(new Response(0, "OK").serialize());
-                    broker.publish(new PlayerJoinedEvent(player));
                     loggedIn = true;
                     continue;
                 }

@@ -1,7 +1,8 @@
 package com.royalzsoftware.gameserver.rpcendpoints;
 
-import com.royalzsoftware.authentication.PlayerLoginAttempt;
+import com.royalzsoftware.authentication.AuthenticationRequest;
 import com.royalzsoftware.authentication.UsernameAlreadyInUseException;
+import com.royalzsoftware.gameserver.PlayerFactory;
 import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
@@ -21,7 +22,7 @@ public class LoginCommand implements Command {
         String password = Double.toString(Math.random() * 100);
 
         try {
-            new PlayerLoginAttempt(username, password);
+            new AuthenticationRequest(username, password, new PlayerFactory());
         } catch (UsernameAlreadyInUseException ex) {
             return new Response(1, "Username already in use.");
         }
