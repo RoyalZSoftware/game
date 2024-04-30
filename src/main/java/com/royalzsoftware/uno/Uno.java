@@ -67,7 +67,7 @@ public class Uno {
         return true;
     }
 
-    public boolean canDoSomething(UnoPlayer player) {
+    public boolean hasPossibleMove(UnoPlayer player) {
         return player.getCards().stream().filter(t -> t.canBePlayed(this.current)).toList().size() > 0;
     }
 
