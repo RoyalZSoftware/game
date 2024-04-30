@@ -1,4 +1,4 @@
-package com.royalzsoftware.authentication;
+package com.royalzsoftware.identification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +11,9 @@ public class AuthenticationRequest {
         return AuthenticationRequests.stream().filter(t -> t.authenticatable.getIdentifier().equalsIgnoreCase(identifier)).findFirst().get();
     }
 
-    private final Authenticatable authenticatable;
+    private final Identifiable authenticatable;
 
-    public AuthenticationRequest(Authenticatable authenticatable, String password) throws UsernameAlreadyInUseException {
+    public AuthenticationRequest(Identifiable authenticatable, String password) throws UsernameAlreadyInUseException {
         if (AuthenticationRequests.stream().filter(t -> t.authenticatable.getIdentifier() == authenticatable.getIdentifier()).findFirst().isPresent()) {
             throw new UsernameAlreadyInUseException();
         }
@@ -23,7 +23,7 @@ public class AuthenticationRequest {
         AuthenticationRequests.add(this);
     }
 
-    public Authenticatable getAuthenticatable() {
+    public Identifiable getAuthenticatable() {
         return this.authenticatable;
     }
 

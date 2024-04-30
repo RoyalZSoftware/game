@@ -1,4 +1,4 @@
-package com.royalzsoftware.authentication;
+package com.royalzsoftware.identification;
 
 public class UsernameAlreadyInUseException extends Exception {
     

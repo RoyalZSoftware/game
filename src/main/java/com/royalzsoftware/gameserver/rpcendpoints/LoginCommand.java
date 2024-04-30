@@ -1,8 +1,8 @@
 package com.royalzsoftware.gameserver.rpcendpoints;
 
-import com.royalzsoftware.authentication.AuthenticationRequest;
-import com.royalzsoftware.authentication.UsernameAlreadyInUseException;
 import com.royalzsoftware.domain.Player;
+import com.royalzsoftware.identification.AuthenticationRequest;
+import com.royalzsoftware.identification.UsernameAlreadyInUseException;
 import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;

@@ -1,19 +1,23 @@
-package com.royalzsoftware.domain;
+package com.royalzsoftware.uno;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.royalzsoftware.eventstream.Subscriber;
 import com.royalzsoftware.identification.Identifiable;
 
-public class Player implements Identifiable {
-    
+public class UnoPlayer implements Identifiable {
 
     public final String username;
+
     private Subscriber subscriber;
 
-    public Player(String username) {
+    private List<Card> cards = new ArrayList<>();
+
+    public UnoPlayer(String username) {
         this.username = username;
         Identifiable.Register(this);
     }
-
     @Override
     public String getIdentifier() {
         return this.username;
@@ -27,5 +31,17 @@ public class Player implements Identifiable {
     @Override
     public Subscriber getSubscriber() {
         return this.subscriber;
+    }
+
+    public void addCard(Card card) {
+        this.cards.add(card);
+    }
+
+    public void removeCard(Card card) {
+        this.cards.remove(card);
+    }
+
+    public List<Card> getCards() {
+        return this.cards;
     }
 }

@@ -8,12 +8,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import com.royalzsoftware.authentication.Authenticatable;
-import com.royalzsoftware.authentication.AuthenticationRequest;
 import com.royalzsoftware.domain.events.PlayerJoinedEvent;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.eventstream.Subscriber;
+import com.royalzsoftware.identification.Identifiable;
+import com.royalzsoftware.identification.AuthenticationRequest;
 import com.royalzsoftware.rpc.Response;
 
 public class EventStreamServer implements Runnable {
@@ -81,7 +81,7 @@ public class EventStreamServer implements Runnable {
                         continue;
                     }
 
-                    Authenticatable authenticatable = loginRequest.getAuthenticatable();
+                    Identifiable authenticatable = loginRequest.getAuthenticatable();
                     Subscriber subscriber = new PrintWriterSubscriber(writer);
 
                     authenticatable.setSubscriber(subscriber);

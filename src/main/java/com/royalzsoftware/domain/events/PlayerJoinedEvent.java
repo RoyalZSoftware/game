@@ -1,13 +1,13 @@
 package com.royalzsoftware.domain.events;
 
-import com.royalzsoftware.authentication.Authenticatable;
 import com.royalzsoftware.eventstream.Event;
+import com.royalzsoftware.identification.Identifiable;
 
 public class PlayerJoinedEvent implements Event {
 
-    public Authenticatable player;
+    public Identifiable player;
 
-    public PlayerJoinedEvent(Authenticatable player) {
+    public PlayerJoinedEvent(Identifiable player) {
         this.player = player;
     }
 

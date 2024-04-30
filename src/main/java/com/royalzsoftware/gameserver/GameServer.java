@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.royalzsoftware.authentication.Authenticatable;
-import com.royalzsoftware.domain.Player;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.gameserver.rpcendpoints.CreateGameCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.JoinGameCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.ListGamesCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.LoginCommand;
+import com.royalzsoftware.identification.Identifiable;
 import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.CommandRouter;
 import com.royalzsoftware.socket.RPCServer;
@@ -42,7 +41,7 @@ public class GameServer {
         Thread spam = new Thread(() -> {
             while (true) {
                 try {
-                    Optional<Authenticatable> player = Authenticatable.authenticatables.stream().findFirst();
+                    Optional<Identifiable> player = Identifiable.identifiables.stream().findFirst();
                     if (player.isPresent()) {
                         System.out.println("Sending");
                         eventBroker.publish(new TestEvent(), player.get().getSubscriber());

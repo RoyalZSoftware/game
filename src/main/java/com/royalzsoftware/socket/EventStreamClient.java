@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import com.royalzsoftware.authentication.InvalidCredentialsException;
+import com.royalzsoftware.identification.InvalidCredentialsException;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Response;
 

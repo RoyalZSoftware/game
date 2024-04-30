@@ -1,4 +1,4 @@
-package com.adnanahmed;
+package com.royalzsoftware;
 
 import static org.junit.Assert.assertTrue;
 
