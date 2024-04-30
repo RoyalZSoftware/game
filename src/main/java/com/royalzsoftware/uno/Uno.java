@@ -23,6 +23,7 @@ public class Uno {
     public Uno(EventBroker broker) {
         this.broker = broker;
     }
+
     public void addPlayer(UnoPlayer player) {
         this.players.add(player);
         this.publishForAllParticipants(new PlayerJoinedEvent(player));
@@ -30,28 +31,33 @@ public class Uno {
 
     public void start() {
         this.round = 0;
-        
+
         this.players.stream().forEach(p -> {
-            p.addCard(new Card(3, CardColor.BLUE));
-            p.addCard(new Card(3, CardColor.BLUE));
-            p.addCard(new Card(3, CardColor.BLUE));
-            p.addCard(new Card(3, CardColor.BLUE));
-            p.addCard(new Card(3, CardColor.BLUE));
-            p.addCard(new Card(3, CardColor.BLUE));
-            p.addCard(new Card(3, CardColor.BLUE));
+            p.addCard(new ValueCard(3, CardColor.BLUE));
+            p.addCard(new ValueCard(3, CardColor.BLUE));
+            p.addCard(new ValueCard(3, CardColor.BLUE));
+            p.addCard(new ValueCard(3, CardColor.BLUE));
+            p.addCard(new ValueCard(3, CardColor.BLUE));
+            p.addCard(new ValueCard(3, CardColor.BLUE));
+            p.addCard(new ValueCard(3, CardColor.BLUE));
         });
 
         this.publishForAllParticipants(new GameStartedEvent());
     }
 
-
     public void drawCard(UnoPlayer player) {
-        player.addCard(new Card(3, CardColor.BLUE));
+        player.addCard(new ValueCard(3, CardColor.BLUE));
     }
 
     public boolean playCard(UnoPlayer player, Card card) {
-        if (!isPlayersTurn(player)) return false;
-        if (!isValidNextCard(card)) return false;
+        if (!isPlayersTurn(player))
+            return false;
+        if (!card.canBePlayed(this.current))
+            return false;
+
+        if (card instanceof ActionCard) {
+            ((ActionCard) card).applyEffect(this);
+        }
 
         player.removeCard(card);
 
@@ -62,7 +68,10 @@ public class Uno {
     }
 
     public boolean canDoSomething(UnoPlayer player) {
-        return player.getCards().stream().filter(t -> this.isValidNextCard(t) == true).toList().size() > 0;
+        return player.getCards().stream().filter(t -> t.canBePlayed(this.current)).toList().size() > 0;
+    }
+
+    public void changeDirection() {
     }
 
     private void nextTurn() {
@@ -73,16 +82,12 @@ public class Uno {
             this.currentTurn = 0;
         }
 
-        this.current.applyEffect(this);
+        // this.current.canBePlayed(current)(this);
 
         this.publishForAllParticipants(new TurnChangedEvent());
     }
 
     private boolean isPlayersTurn(UnoPlayer player) {
-        return true; // TODO
-    }
-    
-    private boolean isValidNextCard(Card card) {
         return true; // TODO
     }
 
