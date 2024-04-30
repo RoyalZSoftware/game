@@ -31,7 +31,7 @@ public class Uno {
 
     private int currentTurn = 0;
     private List<UnoPlayer> players = new ArrayList<>();
-    private List<Card> cardStack = new ArrayList<>();
+    private DrawCardsQueue drawCardsQueue = new DrawCardsQueue();
 
     private Card current;
 
