@@ -13,7 +13,7 @@ public class ValueCard extends ColoredCard {
     @Override
     public boolean canBePlayed(Card currentCard) {
         if (currentCard instanceof ValueCard) {
-            return super.canBePlayed(currentCard) && ((ValueCard) currentCard).value == this.value;
+            return super.canBePlayed(currentCard) || ((ValueCard) currentCard).value == this.value;
         }
         return super.canBePlayed(currentCard);
     }

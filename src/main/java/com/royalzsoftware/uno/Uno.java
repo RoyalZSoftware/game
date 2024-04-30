@@ -11,9 +11,24 @@ import com.royalzsoftware.uno.events.TurnChangedEvent;
 
 public class Uno {
 
-    private EventBroker broker;
+    private enum TurnDirection {
+        ASC(1),
+        DESC(-1);
 
-    private int round = 0;
+        private int modifier;
+
+        private TurnDirection(int modifier) {
+            this.modifier = modifier;
+        }
+
+        public int getModifier() {
+            return this.modifier;
+        }
+    }
+
+    private EventBroker broker;
+    private TurnDirection turnDirection = TurnDirection.ASC;
+
     private int currentTurn = 0;
     private List<UnoPlayer> players = new ArrayList<>();
     private List<Card> cardStack = new ArrayList<>();
@@ -30,8 +45,6 @@ public class Uno {
     }
 
     public void start() {
-        this.round = 0;
-
         this.players.stream().forEach(p -> {
             p.addCard(new ValueCard(3, CardColor.BLUE));
             p.addCard(new ValueCard(3, CardColor.BLUE));
@@ -72,17 +85,23 @@ public class Uno {
     }
 
     public void changeDirection() {
+        this.turnDirection = this.turnDirection == TurnDirection.ASC ? TurnDirection.DESC : TurnDirection.ASC;
     }
 
-    private void nextTurn() {
-        this.currentTurn++;
+    public UnoPlayer getCurrentPlayer() {
+        return this.players.get(this.currentTurn);
+    }
 
-        if (this.currentTurn == this.players.size()) {
-            this.round++;
-            this.currentTurn = 0;
-        }
+    private int calculateNextTurn() {
+        return Math.floorMod((this.turnDirection.getModifier() + this.currentTurn), this.players.size());
+    }
 
-        // this.current.canBePlayed(current)(this);
+    public UnoPlayer getNextPlayer() {
+        return this.players.get(this.calculateNextTurn());
+    }
+
+    public void nextTurn() {
+        this.currentTurn = this.calculateNextTurn();
 
         this.publishForAllParticipants(new TurnChangedEvent());
     }
@@ -92,6 +111,6 @@ public class Uno {
     }
 
     private void publishForAllParticipants(Event event) {
-        this.broker.publish(event, this.players.stream().map(t -> t.getSubscriber()).toList());
+        this.broker.publish(event, this.players.stream().map(t -> t.getSubscriber()).filter(f -> f != null).toList());
     }
 }

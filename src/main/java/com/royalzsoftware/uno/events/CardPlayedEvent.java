@@ -7,6 +7,6 @@ public class CardPlayedEvent implements Event {
     @Override
     public String getIdentifier() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getIdentifier'")
+        throw new UnsupportedOperationException("Unimplemented method 'getIdentifier'");
     }
 }
