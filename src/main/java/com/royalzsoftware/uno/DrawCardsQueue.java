@@ -9,8 +9,16 @@ public class DrawCardsQueue {
     public void add(int cardAmount) {
         this.cardAmount += cardAmount;
     }
+    
+    public int getSize() {
+        return this.cardAmount;
+    }
 
     public List<Card> take() {
-        return IntStream.range(0, cardAmount).mapToObj(t -> CardStack.getInstance().drawCard()).toList();
+        var x = IntStream.range(0, cardAmount).mapToObj(t -> CardStack.getInstance().drawCard()).toList();
+
+        this.cardAmount = 0;
+
+        return x;
     }
 }

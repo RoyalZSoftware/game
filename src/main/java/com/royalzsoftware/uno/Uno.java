@@ -2,6 +2,7 @@ package com.royalzsoftware.uno;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
@@ -31,7 +32,7 @@ public class Uno {
 
     private int currentTurn = 0;
     private List<UnoPlayer> players = new ArrayList<>();
-    private DrawCardsQueue drawCardsQueue = new DrawCardsQueue();
+    public DrawCardsQueue drawCardsQueue = new DrawCardsQueue();
 
     private Card current;
 
@@ -44,15 +45,13 @@ public class Uno {
         this.publishForAllParticipants(new PlayerJoinedEvent(player));
     }
 
-    public void start() {
+    public void handoutCards() {
         this.players.stream().forEach(p -> {
-            p.addCard(new ValueCard(3, CardColor.BLUE));
-            p.addCard(new ValueCard(3, CardColor.BLUE));
-            p.addCard(new ValueCard(3, CardColor.BLUE));
-            p.addCard(new ValueCard(3, CardColor.BLUE));
-            p.addCard(new ValueCard(3, CardColor.BLUE));
-            p.addCard(new ValueCard(3, CardColor.BLUE));
-            p.addCard(new ValueCard(3, CardColor.BLUE));
+            IntStream.range(0, 7)
+                .mapToObj(t -> CardStack.getInstance().drawCard())
+                .forEach(c -> {
+                    p.addCard(c);
+                });
         });
 
         this.publishForAllParticipants(new GameStartedEvent());
@@ -103,11 +102,17 @@ public class Uno {
     public void nextTurn() {
         this.currentTurn = this.calculateNextTurn();
 
+        List<Card> cards = this.drawCardsQueue.take();
+
+        cards.forEach(c -> {
+            this.getCurrentPlayer().addCard(c);
+        });
+
         this.publishForAllParticipants(new TurnChangedEvent());
     }
 
     private boolean isPlayersTurn(UnoPlayer player) {
-        return true; // TODO
+        return this.getCurrentPlayer() == player;
     }
 
     private void publishForAllParticipants(Event event) {

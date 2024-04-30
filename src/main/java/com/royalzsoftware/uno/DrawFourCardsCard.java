@@ -8,6 +8,7 @@ public class DrawFourCardsCard extends WishColorCard implements ActionCard {
 
     @Override
     public void applyEffect(Uno uno) {
+        uno.drawCardsQueue.add(4);
     }
 
     @Override

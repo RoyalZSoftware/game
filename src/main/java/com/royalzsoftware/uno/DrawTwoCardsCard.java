@@ -7,5 +7,6 @@ public class DrawTwoCardsCard extends ColoredCard implements ActionCard {
 
     @Override
     public void applyEffect(Uno uno) {
+        uno.drawCardsQueue.add(2);
     }
 }

@@ -32,4 +32,40 @@ public class UnoTest {
 
         assertEquals("Player3", retrieved.username);
     }
+    @Test
+    public void TestHandoutCards() {
+        Uno uno = new Uno(new EventBroker());
+
+        UnoPlayer playerOne = new UnoPlayer("Player1");
+
+        uno.addPlayer(playerOne);
+
+        uno.handoutCards();
+
+        assertEquals(7, playerOne.getCards().size());
+    }
+
+    @Test
+    public void TestSampleGame() {
+        Uno uno = new Uno(new EventBroker());
+
+        UnoPlayer playerOne = new UnoPlayer("Player1");
+        UnoPlayer playerTwo = new UnoPlayer("Player2");
+
+        uno.addPlayer(playerOne);
+        uno.addPlayer(playerTwo);
+        
+        Card greenFour = new ValueCard(4, CardColor.GREEN);
+        Card redOne = new ValueCard(1, CardColor.RED);
+
+        Card drawFour = new DrawFourCardsCard(CardColor.GREEN);
+        playerOne.addCard(drawFour);
+        playerOne.addCard(redOne);
+
+        playerTwo.addCard(greenFour);
+
+        uno.playCard(playerOne, drawFour);
+
+        assertEquals(5, playerTwo.getCards().size());
+    }
 }
