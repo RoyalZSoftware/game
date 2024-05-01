@@ -85,6 +85,8 @@ public class UnoTest {
         playerOne.addCard(greenFour);
         playerTwo.addCard(redFive);
 
+        assertEquals(false, true);
+
         uno.playCard(playerOne, greenFour);
     }
 }
