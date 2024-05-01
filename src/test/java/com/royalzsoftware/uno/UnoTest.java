@@ -79,7 +79,6 @@ public class UnoTest {
         uno.addPlayer(playerOne);
         uno.addPlayer(playerTwo);
         
-        Card greenFour = new ValueCard(4, CardColor.GREEN);
         Card redFive = new ValueCard(5, CardColor.RED);
 
         Card wishGreen = new WishColorCard(CardColor.GREEN);

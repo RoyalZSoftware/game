@@ -10,7 +10,7 @@ public class WishColorCardFactoryCard implements Card, ActionCard {
 
     @Override
     public boolean canBePlayed(Card currentCard) {
-        return true;
+        return this.cardColor != null;
     }
 
     @Override
