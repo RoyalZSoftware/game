@@ -5,6 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.royalzsoftware.uno.cards.Card;
+import com.royalzsoftware.uno.cards.CardColor;
+import com.royalzsoftware.uno.cards.ValueCard;
+
 public class ValueCardTest {
     @Test
     public void CanBePlayedTest() {

@@ -13,7 +13,7 @@ public class PlayerJoinedEvent implements Event {
 
     @Override
     public String getIdentifier() {
-        return "joined" + player;
+        return "joined";
     }
     
 }

@@ -5,6 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.royalzsoftware.eventstream.EventBroker;
+import com.royalzsoftware.uno.cards.Card;
+import com.royalzsoftware.uno.cards.CardColor;
+import com.royalzsoftware.uno.cards.DrawFourCardsCard;
+import com.royalzsoftware.uno.cards.ValueCard;
+import com.royalzsoftware.uno.cards.WishColorCard;
+import com.royalzsoftware.uno.exceptions.InvalidMoveException;
 
 public class UnoTest {
     @Test

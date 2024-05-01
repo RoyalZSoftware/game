@@ -1,4 +1,4 @@
-package com.royalzsoftware.uno;
+package com.royalzsoftware.uno.cards;
 
 public interface Card {
     Card clone();

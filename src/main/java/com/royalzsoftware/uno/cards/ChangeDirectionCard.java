@@ -1,4 +1,6 @@
-package com.royalzsoftware.uno;
+package com.royalzsoftware.uno.cards;
+
+import com.royalzsoftware.uno.Uno;
 
 public class ChangeDirectionCard extends ColoredCard implements ActionCard {
     public ChangeDirectionCard(CardColor cardColor) {

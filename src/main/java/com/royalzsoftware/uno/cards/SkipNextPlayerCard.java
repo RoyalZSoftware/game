@@ -1,4 +1,6 @@
-package com.royalzsoftware.uno;
+package com.royalzsoftware.uno.cards;
+
+import com.royalzsoftware.uno.Uno;
 
 public class SkipNextPlayerCard extends ColoredCard implements ActionCard {
     public SkipNextPlayerCard(CardColor cardColor) {

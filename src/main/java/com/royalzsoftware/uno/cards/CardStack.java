@@ -1,4 +1,4 @@
-package com.royalzsoftware.uno;
+package com.royalzsoftware.uno.cards;
 
 import java.util.ArrayList;
 import java.util.List;

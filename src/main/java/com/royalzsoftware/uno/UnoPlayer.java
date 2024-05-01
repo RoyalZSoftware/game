@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.royalzsoftware.eventstream.Subscriber;
 import com.royalzsoftware.identification.Identifiable;
+import com.royalzsoftware.uno.cards.Card;
 
 public class UnoPlayer implements Identifiable {
 

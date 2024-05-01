@@ -1,4 +1,4 @@
-package com.royalzsoftware.uno;
+package com.royalzsoftware.uno.exceptions;
 
 public class InvalidMoveException extends RuntimeException{
 }
