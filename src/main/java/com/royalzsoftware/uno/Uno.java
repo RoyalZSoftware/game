@@ -36,6 +36,10 @@ public class Uno {
 
     private Card current = CardStack.getInstance().drawCard();
 
+    public Card getCurrentCard() {
+        return this.current;
+    }
+
     public Uno(EventBroker broker) {
         this.broker = broker;
     }

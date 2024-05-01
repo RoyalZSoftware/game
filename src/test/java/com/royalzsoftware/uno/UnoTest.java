@@ -81,12 +81,14 @@ public class UnoTest {
         
         Card greenFour = new ValueCard(4, CardColor.GREEN);
         Card redFive = new ValueCard(5, CardColor.RED);
-        
-        playerOne.addCard(greenFour);
+
+        Card wishGreen = new WishColorCard(CardColor.GREEN);
+
+        playerOne.addCard(wishGreen);
         playerTwo.addCard(redFive);
 
-        assertEquals(false, true);
+        uno.playCard(playerOne, wishGreen);
 
-        uno.playCard(playerOne, greenFour);
+        uno.playCard(playerTwo, redFive);
     }
 }
