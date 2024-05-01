@@ -1,12 +1,12 @@
 package com.royalzsoftware.gameserver.rpcendpoints;
 
-import com.royalzsoftware.domain.Player;
 import com.royalzsoftware.identification.AuthenticationRequest;
 import com.royalzsoftware.identification.UsernameAlreadyInUseException;
 import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
+import com.royalzsoftware.uno.UnoPlayer;
 
 public class LoginCommand implements Command {
 
@@ -20,7 +20,7 @@ public class LoginCommand implements Command {
         String username = request.args[0];
 
         String password = Double.toString(Math.random() * 100);
-        Player player = new Player(username);
+        UnoPlayer player = new UnoPlayer(username);
 
         try {
             new AuthenticationRequest(player, password);

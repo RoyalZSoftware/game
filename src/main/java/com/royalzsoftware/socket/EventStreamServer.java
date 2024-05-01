@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import com.royalzsoftware.domain.events.PlayerJoinedEvent;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.eventstream.Subscriber;
@@ -90,7 +89,6 @@ public class EventStreamServer implements Runnable {
 
                     writer.println(new Response(0, "OK").serialize());
 
-                    broker.publish(new PlayerJoinedEvent(authenticatable));
                     loggedIn = true;
                     continue;
                 }

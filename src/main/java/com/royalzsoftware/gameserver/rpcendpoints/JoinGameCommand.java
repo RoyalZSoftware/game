@@ -1,11 +1,11 @@
 package com.royalzsoftware.gameserver.rpcendpoints;
 
-import com.royalzsoftware.domain.Game;
 import com.royalzsoftware.gameserver.GameRepository;
 import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
+import com.royalzsoftware.uno.Uno;
 
 public class JoinGameCommand implements Command {
     private final GameRepository gameRepository;
@@ -20,7 +20,7 @@ public class JoinGameCommand implements Command {
             throw new InvalidRequestException();
         }
 
-        Game game = this.gameRepository.findGame(request.args[0]);
+        Uno game = this.gameRepository.findGame(request.args[0]);
 
         if (game == null) {
             return new Response(1, "Game not found.");

@@ -3,23 +3,20 @@ package com.royalzsoftware.gameserver;
 import java.util.Collection;
 import java.util.HashMap;
 
-import com.royalzsoftware.domain.Game;
+import com.royalzsoftware.uno.Uno;
 
 public class GameRepository {
-    private HashMap<String, Game> games = new HashMap<>();
+    private HashMap<String, Uno> games = new HashMap<>();
 
-    public GameRepository() {
-    }
-
-    public Game findGame(String identifier) {
+    public Uno findGame(String identifier) {
         return this.games.get(identifier);
     }
 
-    public Collection<Game> getAll() {
+    public Collection<Uno> getAll() {
         return games.values();
     }
 
-    public String registerGame(Game game) {
+    public String registerGame(Uno game) {
         String id = Integer.toString(this.games.size());
 
         this.games.put(id, game);
