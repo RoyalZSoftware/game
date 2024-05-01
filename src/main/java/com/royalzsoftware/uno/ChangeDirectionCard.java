@@ -9,4 +9,9 @@ public class ChangeDirectionCard extends ColoredCard implements ActionCard {
     public void applyEffect(Uno uno) {
         uno.changeDirection();
     }
+
+    @Override
+    public ColoredCard clone() {
+        return new ChangeDirectionCard(getCardColor());
+    }
 }

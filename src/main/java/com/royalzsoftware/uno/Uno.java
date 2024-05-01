@@ -34,7 +34,7 @@ public class Uno {
     private List<UnoPlayer> players = new ArrayList<>();
     public DrawCardsQueue drawCardsQueue = new DrawCardsQueue();
 
-    private Card current;
+    private Card current = CardStack.getInstance().drawCard();
 
     public Uno(EventBroker broker) {
         this.broker = broker;
@@ -61,11 +61,11 @@ public class Uno {
         player.addCard(new ValueCard(3, CardColor.BLUE));
     }
 
-    public boolean playCard(UnoPlayer player, Card card) {
+    public boolean playCard(UnoPlayer player, Card card) throws NotYourTurnException {
         if (!isPlayersTurn(player))
-            return false;
+            throw new NotYourTurnException();
         if (!card.canBePlayed(this.current))
-            return false;
+            throw new InvalidMoveException();
 
         if (card instanceof ActionCard) {
             ((ActionCard) card).applyEffect(this);

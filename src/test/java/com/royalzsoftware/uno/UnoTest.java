@@ -8,7 +8,7 @@ import com.royalzsoftware.eventstream.EventBroker;
 
 public class UnoTest {
     @Test
-    public void testGetNextPlayer() {
+    public void TestGetNextPlayer() {
         Uno uno = new Uno(new EventBroker());
 
         uno.addPlayer(new UnoPlayer("Player1"));
@@ -46,7 +46,7 @@ public class UnoTest {
     }
 
     @Test
-    public void TestSampleGame() {
+    public void TestDrawFourCards() {
         Uno uno = new Uno(new EventBroker());
 
         UnoPlayer playerOne = new UnoPlayer("Player1");
@@ -67,5 +67,24 @@ public class UnoTest {
         uno.playCard(playerOne, drawFour);
 
         assertEquals(5, playerTwo.getCards().size());
+    }
+
+    @Test(expected = InvalidMoveException.class)
+    public void TestInvalidMove() {
+        Uno uno = new Uno(new EventBroker());
+
+        UnoPlayer playerOne = new UnoPlayer("Player1");
+        UnoPlayer playerTwo = new UnoPlayer("Player2");
+
+        uno.addPlayer(playerOne);
+        uno.addPlayer(playerTwo);
+        
+        Card greenFour = new ValueCard(4, CardColor.GREEN);
+        Card redFive = new ValueCard(5, CardColor.RED);
+        
+        playerOne.addCard(greenFour);
+        playerTwo.addCard(redFive);
+
+        uno.playCard(playerOne, greenFour);
     }
 }

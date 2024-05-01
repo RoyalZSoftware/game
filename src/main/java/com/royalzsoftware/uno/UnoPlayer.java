@@ -34,7 +34,7 @@ public class UnoPlayer implements Identifiable {
     }
 
     public void addCard(Card card) {
-        this.cards.add(card);
+        this.cards.add(card.clone());
     }
 
     public void removeCard(Card card) {

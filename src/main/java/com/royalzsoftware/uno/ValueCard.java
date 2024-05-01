@@ -17,4 +17,8 @@ public class ValueCard extends ColoredCard {
         }
         return super.canBePlayed(currentCard);
     }
+    @Override
+    public ColoredCard clone() {
+        return new ValueCard(value, getCardColor());
+    }
 }

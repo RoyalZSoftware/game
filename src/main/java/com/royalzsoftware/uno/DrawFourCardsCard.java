@@ -1,18 +1,24 @@
 package com.royalzsoftware.uno;
 
-public class DrawFourCardsCard extends WishColorCard implements ActionCard {
+public class DrawFourCardsCard extends WishColorCard {
 
-    public DrawFourCardsCard(CardColor wishedCardColor) {
-        super(wishedCardColor);
+    public DrawFourCardsCard(CardColor cardColor) {
+        super(cardColor);
     }
 
     @Override
     public void applyEffect(Uno uno) {
         uno.drawCardsQueue.add(4);
+        super.applyEffect(uno);
     }
 
     @Override
     public boolean canBePlayed(Card currentCard) {
         return true;
+    }
+
+    @Override
+    public DrawFourCardsCard clone() {
+        return new DrawFourCardsCard(getCardColor());
     }
 }

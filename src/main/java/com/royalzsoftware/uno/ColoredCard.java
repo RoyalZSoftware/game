@@ -2,6 +2,8 @@ package com.royalzsoftware.uno;
 
 public abstract class ColoredCard implements Card {
 
+    public abstract ColoredCard clone();
+
     private CardColor cardColor;
 
     public ColoredCard(CardColor cardColor) {
@@ -12,7 +14,6 @@ public abstract class ColoredCard implements Card {
         return this.cardColor;
     }
 
-    @Override
     public boolean canBePlayed(Card currentCard) {
         return currentCard instanceof ColoredCard && ((ColoredCard) currentCard).cardColor.equals(this.cardColor);
     }

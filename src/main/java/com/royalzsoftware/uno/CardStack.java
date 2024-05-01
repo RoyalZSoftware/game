@@ -12,8 +12,14 @@ public class CardStack {
     private CardStack() {
 
         for (int k = 0; k != 2; k++) {
+            possibleCards.add(new DrawFourCardsCardFactoryCard());
 
             for (CardColor color : CardColor.values()) {
+                possibleCards.add(new DrawTwoCardsCard(color));
+                possibleCards.add(new ChangeDirectionCard(color));
+                possibleCards.add(new SkipNextPlayerCard(color));
+                possibleCards.add(new WishColorCardFactoryCard());
+
                 for (int i = 0; i != 9; i++) {
                     possibleCards.add(new ValueCard(i, color));
                 }
@@ -25,7 +31,16 @@ public class CardStack {
 
     public Card drawCard() {
         int index = ((int) Math.random() * possibleCards.size());
-        return possibleCards.get(index);
+        return possibleCards.get(index).clone();
+    }
+
+    public Card drawValueCard() {
+        Card c = null;
+        while (!(c instanceof ValueCard)) {
+            c = drawCard();
+        }
+
+        return c;
     }
 
     public static CardStack getInstance() {
