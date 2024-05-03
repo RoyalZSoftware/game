@@ -8,12 +8,16 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.eventstream.Subscriber;
 import com.royalzsoftware.identification.Identifiable;
 import com.royalzsoftware.identification.AuthenticationRequest;
 import com.royalzsoftware.rpc.Response;
+import com.royalzsoftware.uno.UnoPlayer;
+import com.royalzsoftware.uno.events.PlayerJoinedEvent;
 
 public class EventStreamServer implements Runnable {
 
@@ -23,14 +27,21 @@ public class EventStreamServer implements Runnable {
     private class PrintWriterSubscriber implements Subscriber {
 
         private PrintWriter writer;
+        private ObjectMapper mapper;
 
         public PrintWriterSubscriber(PrintWriter writer) {
             this.writer = writer;
+            this.mapper = new ObjectMapper();
         }
 
         @Override
         public void eventReceived(Event event) {
-            this.writer.println(event.getIdentifier());
+            try {
+                this.writer.println(this.mapper.writeValueAsString(new Response(0, event)));
+            } catch (JsonProcessingException e) {
+                this.writer.println(event.getIdentifier());
+                e.printStackTrace();
+            }
         }
 
     }
@@ -51,6 +62,8 @@ public class EventStreamServer implements Runnable {
             try {
                 Socket socket = this.serverSocket.accept();
 
+                ObjectMapper mapper = new ObjectMapper();
+
                 boolean loggedIn = false;
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
@@ -64,19 +77,19 @@ public class EventStreamServer implements Runnable {
                     String[] parts = line.split(";");
 
                     if (parts.length != 2) {
-                        writer.println(new Response(1, "Invalid login attempt").serialize());
+                        writer.println(mapper.writeValueAsString(new Response(1, "Invalid login attempt")));
                         continue;
                     }
 
                     AuthenticationRequest loginRequest = AuthenticationRequest.FindLoginAttempt(parts[0]);
 
                     if (loginRequest == null) {
-                        writer.println(new Response(106, "Login attempt not found.").serialize());
+                        writer.println(mapper.writeValueAsString(new Response(106, "Login attempt not found.")));
                         continue;
                     }
 
                     if (!loginRequest.checkPassword(parts[1])) {
-                        writer.println(new Response(107, "Invalid credentials").serialize());
+                        writer.println(mapper.writeValueAsString(new Response(107, "Invalid credentials")));
                         continue;
                     }
 
@@ -87,7 +100,9 @@ public class EventStreamServer implements Runnable {
 
                     broker.subscribe(subscriber);
 
-                    writer.println(new Response(0, "OK").serialize());
+                    broker.publish(new PlayerJoinedEvent((UnoPlayer) authenticatable));
+                    
+                    writer.println(mapper.writeValueAsString(new Response(0, "OK")));
 
                     loggedIn = true;
                     continue;

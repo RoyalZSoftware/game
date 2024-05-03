@@ -6,6 +6,10 @@ public class WishColorCardFactoryCard implements Card, ActionCard {
     
     private CardColor cardColor;
 
+    public WishColorCardFactoryCard() {
+
+    }
+
     public void setColor(CardColor color) {
         this.cardColor = color;
     }

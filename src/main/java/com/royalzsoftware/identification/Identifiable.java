@@ -3,6 +3,7 @@ package com.royalzsoftware.identification;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.Subscriber;
 
 public interface Identifiable {
@@ -18,5 +19,5 @@ public interface Identifiable {
 
     String getIdentifier();
     void setSubscriber(Subscriber subscriber);
-    Subscriber getSubscriber();
+    void notifyAboutEvent(Event event);
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.uno.cards.ActionCard;
@@ -38,13 +39,18 @@ public class Uno {
     private TurnDirection turnDirection = TurnDirection.ASC;
 
     private int currentTurn = 0;
-    private List<UnoPlayer> players = new ArrayList<UnoPlayer>();
+    public List<UnoPlayer> players = new ArrayList<UnoPlayer>();
     public DrawCardsQueue drawCardsQueue = new DrawCardsQueue();
 
     private Card current = CardStack.getInstance().drawCard();
 
+    @JsonIgnore
     public Card getCurrentCard() {
         return this.current;
+    }
+
+    public Uno() {
+        this.broker = new EventBroker();
     }
 
     public Uno(EventBroker broker) {
@@ -98,6 +104,7 @@ public class Uno {
         this.turnDirection = this.turnDirection == TurnDirection.ASC ? TurnDirection.DESC : TurnDirection.ASC;
     }
 
+    @JsonIgnore
     public UnoPlayer getCurrentPlayer() {
         return this.players.get(this.currentTurn);
     }
@@ -106,10 +113,12 @@ public class Uno {
         return Math.floorMod((this.turnDirection.getModifier() + this.currentTurn), this.players.size());
     }
 
+    @JsonIgnore
     public UnoPlayer getNextPlayer() {
         return this.players.get(this.calculateNextTurn());
     }
 
+    @JsonIgnore
     public void nextTurn() {
         this.currentTurn = this.calculateNextTurn();
 
@@ -127,7 +136,9 @@ public class Uno {
     }
 
     private void publishForAllParticipants(Event event) {
-        this.broker.publish(event, this.players.stream().map(t -> t.getSubscriber()).filter(f -> f != null).toList());
+        this.players.stream().forEach(p -> {
+            p.notifyAboutEvent(event);
+        });
     }
 
 }

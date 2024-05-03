@@ -14,10 +14,10 @@ public class LoginCommand implements Command {
 
     @Override
     public Response handle(Request request) throws InvalidRequestException {
-        if (request.args.length != 1) {
+        var username = request.args.get("username");
+        if (username == null) {
             throw new InvalidRequestException();
         }
-        String username = request.args[0];
 
         String password = Double.toString(Math.random() * 100);
         UnoPlayer player = new UnoPlayer(username);

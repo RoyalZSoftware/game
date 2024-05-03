@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.royalzsoftware.rpc.CommandNotFoundException;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
@@ -18,6 +19,8 @@ public class RPCServer implements Runnable {
 
     private ServerSocket serverSocket;
     private CommandRouter router;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     public RPCServer(int port, CommandRouter router) throws IOException {
         this.serverSocket = new ServerSocket(port);
@@ -41,16 +44,18 @@ public class RPCServer implements Runnable {
                 try {
                     String stringifiedRequest = in.readLine();
 
-                    Request request = Request.deserialize(stringifiedRequest);
+                    Request request = this.mapper.readValue(stringifiedRequest, Request.class);
+
+                    System.out.println(this.mapper.writeValueAsString(request));
 
                     Response response = this.router.handle(request);
 
-                    out.println(response.serialize());
+                    out.println(this.mapper.writeValueAsString(response));
                 } catch (InvalidRequestException e) {
-                    out.println(new Response(101, "Invalid command usage.").serialize());
+                    out.println(this.mapper.writeValueAsString(new Response(101, "Invalid command usage.")));
                     e.printStackTrace();
                 } catch (CommandNotFoundException e) {
-                    out.println(new Response(102, "Command not found").serialize());
+                    out.println(this.mapper.writeValueAsString(new Response(102, "Command not found")));
                     e.printStackTrace();
                 } finally {
                     client.close();

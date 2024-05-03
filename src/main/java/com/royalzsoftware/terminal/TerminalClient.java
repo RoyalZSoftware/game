@@ -3,19 +3,21 @@ package com.royalzsoftware.terminal;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 
 import com.royalzsoftware.identification.InvalidCredentialsException;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
 import com.royalzsoftware.socket.RPCClient;
+import com.royalzsoftware.terminal.requests.LoginRequest;
+import com.royalzsoftware.socket.AuthenticatedRPCClient;
 import com.royalzsoftware.socket.EventStreamClient;
+import com.royalzsoftware.socket.IRPCClient;
 
 public class TerminalClient {
-    private RPCClient rpcClient;
+    private IRPCClient rpcClient;
 
-    public TerminalClient(RPCClient rpcclient) {
+    public TerminalClient(IRPCClient rpcclient) {
         this.rpcClient = rpcclient;
         this.startGame();
     }
@@ -43,11 +45,12 @@ public class TerminalClient {
     }
 
     private void listenForNotifications(String username) throws IOException {
-        Response response = this.rpcClient.Send(new Request("login", new String[]{username}, new HashMap<>()));
+        Response response = this.rpcClient.Send(new LoginRequest(username));
         if (response.status != 102) {
             throw new IOException("Server did not return 102");
         }
-        String password = response.payload;
+        String password = (String) response.payload;
+        this.rpcClient = new AuthenticatedRPCClient(this.rpcClient, username);
         EventStreamClient eventStreamClient = new EventStreamClient("localhost", 8001);
 
         Thread t = new Thread(() -> {
@@ -58,6 +61,9 @@ public class TerminalClient {
             }
         });
         t.start();
+        Response res = this.rpcClient.Send(new Request("creategame"));
+
+        System.out.println(res.payload);
     }
 
     public static void main(String[] args) {

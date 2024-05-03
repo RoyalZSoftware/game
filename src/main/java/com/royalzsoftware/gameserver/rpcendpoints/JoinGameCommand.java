@@ -16,11 +16,12 @@ public class JoinGameCommand implements Command {
 
     @Override
     public Response handle(Request request) throws InvalidRequestException{
-        if (request.args.length != 1) {
+        var gameId = request.args.get("gameId");
+        if (gameId == null) {
             throw new InvalidRequestException();
         }
 
-        Uno game = this.gameRepository.findGame(request.args[0]);
+        Uno game = this.gameRepository.findGame(gameId);
 
         if (game == null) {
             return new Response(1, "Game not found.");

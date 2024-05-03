@@ -5,7 +5,7 @@ import com.royalzsoftware.uno.UnoPlayer;
 
 public class PlayerJoinedEvent implements Event {
 
-    private UnoPlayer player;
+    public UnoPlayer player;
 
     public PlayerJoinedEvent(UnoPlayer player) {
         this.player = player;

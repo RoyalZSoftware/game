@@ -3,6 +3,7 @@ package com.royalzsoftware.uno;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.Subscriber;
 import com.royalzsoftware.identification.Identifiable;
 import com.royalzsoftware.uno.cards.Card;
@@ -29,11 +30,6 @@ public class UnoPlayer implements Identifiable {
         this.subscriber = subscriber;
     }
 
-    @Override
-    public Subscriber getSubscriber() {
-        return this.subscriber;
-    }
-
     public void addCard(Card card) {
         this.cards.add(card.clone());
     }
@@ -44,5 +40,9 @@ public class UnoPlayer implements Identifiable {
 
     public List<Card> getCards() {
         return this.cards;
+    }
+    @Override
+    public void notifyAboutEvent(Event event) {
+        this.subscriber.eventReceived(event);
     }
 }
