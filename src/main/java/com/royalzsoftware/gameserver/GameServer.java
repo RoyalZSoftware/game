@@ -1,6 +1,7 @@
 package com.royalzsoftware.gameserver;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import com.royalzsoftware.gameserver.rpcendpoints.JoinGameCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.ListGamesCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.LoginCommand;
 import com.royalzsoftware.http.HTTPRPCServer;
+import com.royalzsoftware.http.WebsocketEventStreamServer;
 import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.CommandRouter;
 import com.royalzsoftware.socket.EventStreamServer;
@@ -45,6 +47,9 @@ public class GameServer {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        WebsocketEventStreamServer wssstreamServer = new WebsocketEventStreamServer(new InetSocketAddress(8004), eventBroker);
+        wssstreamServer.listenInThread();
 
         try {
             var rpcServer = new RPCServer(8002, router);
