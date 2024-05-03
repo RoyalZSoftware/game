@@ -1,10 +1,5 @@
 package com.royalzsoftware.uno.cards;
 
-import java.util.HashMap;
-
-import com.royalzsoftware.serialization.ObjectSerializer;
-import com.royalzsoftware.serialization.Serializable;
-import com.royalzsoftware.serialization.Serializer;
 import com.royalzsoftware.uno.Uno;
 
 public class WishColorCardFactoryCard implements Card, ActionCard {
@@ -30,11 +25,5 @@ public class WishColorCardFactoryCard implements Card, ActionCard {
         var card = new WishColorCard(this.cardColor);
 
         card.applyEffect(uno);
-    }
-
-    @Override
-    public Serializer getSerializer() {
-        var m = new HashMap<String, Serializable>();
-        return new ObjectSerializer(m);
     }
 }

@@ -1,8 +1,6 @@
 package com.royalzsoftware.uno.cards;
 
-import com.royalzsoftware.serialization.Serializable;
-
-public interface Card extends Serializable {
+public interface Card {
     Card clone();
     boolean canBePlayed(Card currentCard);
 }

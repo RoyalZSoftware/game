@@ -56,6 +56,21 @@ public class ObjectSerializerTest {
         }
     }
 
+    class PlayerDataContract implements Serializable {
+
+        private UnoPlayer player;
+
+        public PlayerDataContract(UnoPlayer player) {
+            this.player = player;
+        }
+
+        @Override
+        public Serializer getSerializer() {
+            return new StringSerializer(player.username);
+        }
+
+    }
+
     @Test
     public void testSerialize() {
         var p = new UnoPlayer("Alex");
@@ -64,8 +79,10 @@ public class ObjectSerializerTest {
         p.addCard(CardStack.getInstance().drawCard());
         p.addCard(CardStack.getInstance().drawCard());
 
+        PlayerDataContract pdtc = new PlayerDataContract(p);
+
         System.out.println(
-            new JsonSerializer().serialize(p)
+            new JsonSerializer().serialize(pdtc)
         );
     }
 }

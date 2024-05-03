@@ -1,17 +1,11 @@
 package com.royalzsoftware.uno;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
-import com.royalzsoftware.serialization.ArraySerializable;
-import com.royalzsoftware.serialization.ArraySerializer;
-import com.royalzsoftware.serialization.ObjectSerializer;
-import com.royalzsoftware.serialization.Serializable;
-import com.royalzsoftware.serialization.Serializer;
 import com.royalzsoftware.uno.cards.ActionCard;
 import com.royalzsoftware.uno.cards.Card;
 import com.royalzsoftware.uno.cards.CardColor;
@@ -23,7 +17,7 @@ import com.royalzsoftware.uno.events.TurnChangedEvent;
 import com.royalzsoftware.uno.exceptions.InvalidMoveException;
 import com.royalzsoftware.uno.exceptions.NotYourTurnException;
 
-public class Uno implements Serializable {
+public class Uno {
 
     private enum TurnDirection {
         ASC(1),
@@ -136,12 +130,4 @@ public class Uno implements Serializable {
         this.broker.publish(event, this.players.stream().map(t -> t.getSubscriber()).filter(f -> f != null).toList());
     }
 
-    @Override
-    public Serializer getSerializer() {
-        var properties = new HashMap<String, Serializable>();
-        properties.put("cards", new ArraySerializable(this.players.stream().map(t -> (Serializable) t).toList()));
-        properties.put("currentPlayer", this.getCurrentPlayer());
-
-        return new ObjectSerializer(properties);
-    }
 }

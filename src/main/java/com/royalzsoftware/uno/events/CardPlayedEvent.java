@@ -1,7 +1,6 @@
 package com.royalzsoftware.uno.events;
 
 import com.royalzsoftware.eventstream.Event;
-import com.royalzsoftware.serialization.Serializable;
 import com.royalzsoftware.uno.cards.Card;
 
 public class CardPlayedEvent implements Event {
@@ -14,9 +13,5 @@ public class CardPlayedEvent implements Event {
     @Override
     public String getIdentifier() {
         return "cardplayed";
-    }
-
-    public Serializable getPayload() {
-        return this.card;
     }
 }
