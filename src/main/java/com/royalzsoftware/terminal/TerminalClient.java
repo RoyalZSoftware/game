@@ -11,7 +11,6 @@ import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
 import com.royalzsoftware.socket.RPCClient;
-import com.royalzsoftware.terminal.requests.LoginRequest;
 import com.royalzsoftware.socket.EventStreamClient;
 
 public class TerminalClient {
@@ -44,18 +43,20 @@ public class TerminalClient {
         return username;
     }
 
-    private void listenForNotifications(String username) throws IOException {
+    private void listenForNotifications(String password) throws IOException {
+        /*
         Response response = this.rpcClient.Send(new LoginRequest(username));
         if (response.status != 102) {
             throw new IOException("Server did not return 102");
         }
         String password = (String) response.payload;
-        this.rpcClient = new AuthenticatedRPCClient(this.rpcClient, username);
+        */
+        this.rpcClient = new AuthenticatedRPCClient(this.rpcClient, "Alex");
         EventStreamClient eventStreamClient = new EventStreamClient("localhost", 8001);
 
         Thread t = new Thread(() -> {
             try {
-                eventStreamClient.connect(username, password);
+                eventStreamClient.connect("Alex", password);
             } catch (InvalidRequestException | InvalidCredentialsException e) {
                 e.printStackTrace();
             }

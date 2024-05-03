@@ -47,7 +47,7 @@ public class HTTPRPCServer {
             var path = httpExchange.getRequestURI().getPath();
             var commandString = path.split("/");
             if (commandString.length != 2) {
-                SendResponse(httpExchange, new Response(1, "Invalid path"));
+                sendResponse(httpExchange, new Response(1, "Invalid path"));
                 return;
             }
 
@@ -57,15 +57,15 @@ public class HTTPRPCServer {
 
             try {
                 Response res = this.router.handle(request);
-                SendResponse(httpExchange, res);
+                sendResponse(httpExchange, res);
             } catch (CommandNotFoundException e) {
-                SendResponse(httpExchange, new Response(1, "Command not found."));
+                sendResponse(httpExchange, new Response(1, "Command not found."));
             } catch (InvalidRequestException e) {
-                SendResponse(httpExchange, new Response(1, e.getReason()));
+                sendResponse(httpExchange, new Response(1, e.getReason()));
             }
         }
 
-        private void SendResponse(HttpExchange exchange, Response response) throws IOException {
+        private void sendResponse(HttpExchange exchange, Response response) throws IOException {
             var httpStatus = response.status != 0 ? 400 : 200;
             String responseContent = new ObjectMapper().writeValueAsString(response);
             exchange.sendResponseHeaders(httpStatus, responseContent.length());

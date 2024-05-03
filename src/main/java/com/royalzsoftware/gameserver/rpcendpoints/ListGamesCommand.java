@@ -4,22 +4,21 @@ import java.util.Collection;
 
 import com.royalzsoftware.gameserver.GameRepository;
 import com.royalzsoftware.gameserver.Trackable;
-import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
 import com.royalzsoftware.uno.Uno;
+import com.royalzsoftware.uno.UnoPlayer;
 
-public class ListGamesCommand implements Command {
+public class ListGamesCommand extends AuthenticatedCommandBase {
     
-    private GameRepository gameRepository;
 
     public ListGamesCommand(GameRepository gameRepository) {
-        this.gameRepository = gameRepository;
+        super(gameRepository);
     }
 
     @Override
-    public Response handle(Request request) throws InvalidRequestException {
+    public Response handleAuthenticated(Request request, UnoPlayer player) throws InvalidRequestException {
         Collection<Trackable<Uno>> games = this.gameRepository.getAll();
         return new Response(0, games);
     }
