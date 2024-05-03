@@ -43,6 +43,7 @@ public class UnoPlayer implements Identifiable {
     }
     @Override
     public void notifyAboutEvent(Event event) {
+        if (this.subscriber == null) return;
         this.subscriber.eventReceived(event);
     }
 }

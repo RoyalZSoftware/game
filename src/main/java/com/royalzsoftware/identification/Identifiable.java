@@ -16,6 +16,10 @@ public interface Identifiable {
     public static void Register(Identifiable authenticatable) {
         identifiables.add(authenticatable);
     }
+    
+    public static void Unregister(Identifiable identifiable) {
+        identifiables.remove(identifiable);
+    }
 
     String getIdentifier();
     void setSubscriber(Subscriber subscriber);
