@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.gameserver.rpcendpoints.CreateGameCommand;
+import com.royalzsoftware.gameserver.rpcendpoints.DetailsCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.JoinGameCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.ListGamesCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.LoginCommand;
@@ -26,6 +27,7 @@ public class GameServer {
         commands.add(new CreateGameCommand(eventBroker, gameRepository));
         commands.add(new ListGamesCommand(gameRepository));
         commands.add(new LoginCommand());
+        commands.add(new DetailsCommand(gameRepository));
 
         CommandRouter router = new CommandRouter(commands);
 

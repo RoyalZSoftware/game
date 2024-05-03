@@ -1,21 +1,19 @@
 package com.royalzsoftware.gameserver.rpcendpoints;
 
 import com.royalzsoftware.gameserver.GameRepository;
-import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
 import com.royalzsoftware.uno.Uno;
+import com.royalzsoftware.uno.UnoPlayer;
 
-public class JoinGameCommand implements Command {
-    private final GameRepository gameRepository;
-
+public class JoinGameCommand extends AuthenticatedCommandBase {
     public JoinGameCommand(GameRepository gameRepository) {
-        this.gameRepository = gameRepository;
+        super(gameRepository);
     }
 
     @Override
-    public Response handle(Request request) throws InvalidRequestException{
+    public Response handleAuthenticated(Request request, UnoPlayer player) throws InvalidRequestException {
         var gameId = request.args.get("gameId");
         if (gameId == null) {
             throw new InvalidRequestException();
@@ -26,6 +24,9 @@ public class JoinGameCommand implements Command {
         if (game == null) {
             return new Response(1, "Game not found.");
         }
+
+        this.gameRepository.addPlayerToGame(player, game);
+        game.addPlayer(player);
         return new Response(0, "OK");
     }
 

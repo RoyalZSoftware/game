@@ -3,6 +3,7 @@ package com.royalzsoftware.gameserver.rpcendpoints;
 import java.util.Collection;
 
 import com.royalzsoftware.gameserver.GameRepository;
+import com.royalzsoftware.gameserver.Trackable;
 import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
@@ -19,7 +20,7 @@ public class ListGamesCommand implements Command {
 
     @Override
     public Response handle(Request request) throws InvalidRequestException {
-        Collection<Uno> games = this.gameRepository.getAll();
+        Collection<Trackable<Uno>> games = this.gameRepository.getAll();
         return new Response(0, Integer.toString(games.size()));
     }
 

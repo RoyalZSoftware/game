@@ -64,6 +64,9 @@ public class TerminalClient {
         Response res = this.rpcClient.Send(new Request("creategame"));
 
         System.out.println(res.payload);
+        res = this.rpcClient.Send(new Request("details"));
+
+        System.out.println(res.payload);
     }
 
     public static void main(String[] args) {
