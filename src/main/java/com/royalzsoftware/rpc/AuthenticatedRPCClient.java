@@ -1,9 +1,6 @@
-package com.royalzsoftware.socket;
+package com.royalzsoftware.rpc;
 
 import java.io.IOException;
-
-import com.royalzsoftware.rpc.Request;
-import com.royalzsoftware.rpc.Response;
 
 public class AuthenticatedRPCClient implements IRPCClient {
 

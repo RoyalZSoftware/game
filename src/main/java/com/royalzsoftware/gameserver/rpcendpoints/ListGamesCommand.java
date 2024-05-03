@@ -21,7 +21,7 @@ public class ListGamesCommand implements Command {
     @Override
     public Response handle(Request request) throws InvalidRequestException {
         Collection<Trackable<Uno>> games = this.gameRepository.getAll();
-        return new Response(0, Integer.toString(games.size()));
+        return new Response(0, games);
     }
 
     @Override

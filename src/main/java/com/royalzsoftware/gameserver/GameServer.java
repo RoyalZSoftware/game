@@ -10,10 +10,11 @@ import com.royalzsoftware.gameserver.rpcendpoints.DetailsCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.JoinGameCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.ListGamesCommand;
 import com.royalzsoftware.gameserver.rpcendpoints.LoginCommand;
+import com.royalzsoftware.http.HTTPRPCServer;
 import com.royalzsoftware.rpc.Command;
 import com.royalzsoftware.rpc.CommandRouter;
-import com.royalzsoftware.socket.RPCServer;
 import com.royalzsoftware.socket.EventStreamServer;
+import com.royalzsoftware.socket.RPCServer;
 
 public class GameServer {
 
@@ -23,16 +24,16 @@ public class GameServer {
         EventBroker eventBroker = new EventBroker();
 
         List<Command> commands = new ArrayList<Command>();
-        commands.add(new JoinGameCommand(gameRepository));
-        commands.add(new CreateGameCommand(eventBroker, gameRepository));
-        commands.add(new ListGamesCommand(gameRepository));
         commands.add(new LoginCommand());
+        commands.add(new JoinGameCommand(gameRepository));
+        commands.add(new ListGamesCommand(gameRepository));
         commands.add(new DetailsCommand(gameRepository));
+        commands.add(new CreateGameCommand(eventBroker, gameRepository));
 
         CommandRouter router = new CommandRouter(commands);
 
         try {
-            RPCServer rpcServer = new RPCServer(8000, router);
+            var rpcServer = new HTTPRPCServer(8000, router);
             rpcServer.listenInThread();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -41,6 +42,13 @@ public class GameServer {
         try {
             EventStreamServer streamServer = new EventStreamServer(8001, eventBroker);
             streamServer.listenInThread();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            var rpcServer = new RPCServer(8002, router);
+            rpcServer.listenInThread();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

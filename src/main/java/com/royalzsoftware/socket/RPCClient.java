@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.royalzsoftware.rpc.IRPCClient;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
 

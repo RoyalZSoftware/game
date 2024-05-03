@@ -5,14 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.royalzsoftware.identification.InvalidCredentialsException;
+import com.royalzsoftware.rpc.AuthenticatedRPCClient;
+import com.royalzsoftware.rpc.IRPCClient;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Request;
 import com.royalzsoftware.rpc.Response;
 import com.royalzsoftware.socket.RPCClient;
 import com.royalzsoftware.terminal.requests.LoginRequest;
-import com.royalzsoftware.socket.AuthenticatedRPCClient;
 import com.royalzsoftware.socket.EventStreamClient;
-import com.royalzsoftware.socket.IRPCClient;
 
 public class TerminalClient {
     private IRPCClient rpcClient;
@@ -70,7 +70,7 @@ public class TerminalClient {
     }
 
     public static void main(String[] args) {
-        RPCClient client = new RPCClient("localhost", 8000);
+        RPCClient client = new RPCClient("localhost", 8002);
         new TerminalClient(client);
     }
 }

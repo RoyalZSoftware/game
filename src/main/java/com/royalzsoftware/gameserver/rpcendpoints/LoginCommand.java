@@ -9,14 +9,14 @@ import com.royalzsoftware.rpc.Response;
 import com.royalzsoftware.uno.UnoPlayer;
 
 public class LoginCommand implements Command {
-
-    public LoginCommand() { }
+    public LoginCommand() {
+    }
 
     @Override
     public Response handle(Request request) throws InvalidRequestException {
         var username = request.args.get("username");
         if (username == null) {
-            throw new InvalidRequestException();
+            throw new InvalidRequestException("Username not provided.");
         }
 
         String password = Double.toString(Math.random() * 100);
