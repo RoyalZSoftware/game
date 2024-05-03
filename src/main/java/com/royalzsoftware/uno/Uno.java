@@ -35,6 +35,7 @@ public class Uno {
         }
     }
 
+    @JsonIgnore
     private EventBroker broker;
     private TurnDirection turnDirection = TurnDirection.ASC;
 
@@ -50,7 +51,6 @@ public class Uno {
     }
 
     public Uno() {
-        this.broker = new EventBroker();
     }
 
     public Uno(EventBroker broker) {
