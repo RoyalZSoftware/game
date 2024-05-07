@@ -6,9 +6,7 @@ public abstract class ColoredCard implements Card {
 
     private CardColor cardColor;
 
-    public ColoredCard() {
-
-    }
+    public ColoredCard() { }
 
     public ColoredCard(CardColor cardColor) {
         this.cardColor = cardColor;

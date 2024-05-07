@@ -16,6 +16,7 @@ import com.royalzsoftware.uno.rpcendpoints.CreateGameCommand;
 import com.royalzsoftware.uno.rpcendpoints.JoinGameCommand;
 import com.royalzsoftware.uno.rpcendpoints.ListGamesCommand;
 import com.royalzsoftware.uno.rpcendpoints.LoginCommand;
+import com.royalzsoftware.uno.rpcendpoints.ServeCommand;
 import com.royalzsoftware.uno.rpcendpoints.ShowGameInfoCommand;
 
 public class App {
@@ -31,6 +32,7 @@ public class App {
         commands.add(new ListGamesCommand(userRepository, gameRepository));
         commands.add(new ShowGameInfoCommand(userRepository, gameRepository));
         commands.add(new CreateGameCommand(eventBroker, gameRepository, userRepository));
+        commands.add(new ServeCommand());
 
         CommandRouter router = new CommandRouter(commands);
 

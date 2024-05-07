@@ -68,6 +68,7 @@ public class HTTPRPCServer {
         private void sendResponse(HttpExchange exchange, Response response) throws IOException {
             var httpStatus = response.status != 0 ? 400 : 200;
             String responseContent = new ObjectMapper().writeValueAsString(response);
+            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
             exchange.sendResponseHeaders(httpStatus, responseContent.length());
             OutputStream stream = exchange.getResponseBody();
             stream.write(responseContent.getBytes());
