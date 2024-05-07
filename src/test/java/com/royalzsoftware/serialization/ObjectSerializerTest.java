@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 
 import org.junit.Test;
 
-import com.royalzsoftware.uno.UnoPlayer;
-import com.royalzsoftware.uno.cards.CardStack;
+import com.royalzsoftware.uno.domain.cards.CardStack;
+import com.royalzsoftware.uno.domain.UnoPlayer;
 
 public class ObjectSerializerTest {
     

@@ -5,12 +5,14 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.royalzsoftware.eventstream.EventBroker;
-import com.royalzsoftware.uno.cards.Card;
-import com.royalzsoftware.uno.cards.CardColor;
-import com.royalzsoftware.uno.cards.DrawFourCardsCard;
-import com.royalzsoftware.uno.cards.ValueCard;
-import com.royalzsoftware.uno.cards.WishColorCard;
-import com.royalzsoftware.uno.exceptions.InvalidMoveException;
+import com.royalzsoftware.uno.domain.cards.Card;
+import com.royalzsoftware.uno.domain.cards.CardColor;
+import com.royalzsoftware.uno.domain.cards.DrawFourCardsCard;
+import com.royalzsoftware.uno.domain.cards.ValueCard;
+import com.royalzsoftware.uno.domain.cards.WishColorCard;
+import com.royalzsoftware.uno.domain.Uno;
+import com.royalzsoftware.uno.domain.UnoPlayer;
+import com.royalzsoftware.uno.domain.exceptions.InvalidMoveException;
 
 public class UnoTest {
     @Test

@@ -1,6 +1,8 @@
 package com.royalzsoftware.rpc;
 
 public class Response {
+
+    public static Response Ok = new Response(0, "OK");
     public int status;
     public Object payload;
 

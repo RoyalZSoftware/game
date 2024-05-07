@@ -5,7 +5,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.royalzsoftware.uno.cards.CardStack;
+import com.royalzsoftware.uno.domain.cards.CardStack;
+import com.royalzsoftware.uno.domain.DrawCardsQueue;
 
 public class CardStackTest {
 

@@ -13,8 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.eventstream.Subscriber;
-import com.royalzsoftware.identification.AuthenticationRequest;
-import com.royalzsoftware.identification.Identifiable;
 import com.royalzsoftware.rpc.Response;
 
 public class WebsocketEventStreamServer extends WebSocketServer {
@@ -50,32 +48,7 @@ public class WebsocketEventStreamServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String msg) {
         System.out.println(msg);
         if (msg.split(";").length == 2) {
-            System.out.println("halsdjkl");
             // is Authentication request
-            String[] parts = msg.split(";");
-            AuthenticationRequest authRequest = AuthenticationRequest.FindLoginAttempt(parts[0]);
-            if (authRequest == null) {
-                try {
-                    conn.send(this.buildResponse(new Response(404, "Not found.")));
-                } catch (JsonProcessingException e) {
-                    conn.send("ERROR");
-                    e.printStackTrace();
-                }
-                return;
-            }
-            boolean isValid = authRequest.checkPassword(parts[1]);
-            if (!isValid) {
-                try {
-
-                conn.send(this.buildResponse(new Response(1, "Invalid")));
-                } catch(JsonProcessingException ex) {
-                    ex.printStackTrace();
-                    conn.send("ERROR");
-                }
-                return;
-            }
-            
-            Identifiable identifiable = authRequest.getAuthenticatable();
             Subscriber subsc = new Subscriber() {
 
                 @Override
@@ -90,7 +63,6 @@ public class WebsocketEventStreamServer extends WebSocketServer {
                 
             };
 
-            identifiable.setSubscriber(subsc);
             this.broker.subscribe(subsc);
 
             try {

@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.royalzsoftware.identification.InvalidCredentialsException;
 import com.royalzsoftware.rpc.AuthenticatedRPCClient;
 import com.royalzsoftware.rpc.IRPCClient;
 import com.royalzsoftware.rpc.InvalidRequestException;
@@ -57,7 +56,7 @@ public class TerminalClient {
         Thread t = new Thread(() -> {
             try {
                 eventStreamClient.connect("Alex", password);
-            } catch (InvalidRequestException | InvalidCredentialsException e) {
+            } catch (InvalidRequestException e) {
                 e.printStackTrace();
             }
         });
@@ -71,7 +70,7 @@ public class TerminalClient {
     }
 
     public static void main(String[] args) {
-        RPCClient client = new RPCClient("localhost", 8002);
+        RPCClient client = new RPCClient("localhost", 8001);
         new TerminalClient(client);
     }
 }

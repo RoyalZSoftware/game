@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.royalzsoftware.identification.InvalidCredentialsException;
 import com.royalzsoftware.rpc.InvalidRequestException;
 import com.royalzsoftware.rpc.Response;
 
@@ -24,7 +23,7 @@ public class EventStreamClient {
         this.mapper = new ObjectMapper();
     }
 
-    public void connect(String username, String password) throws InvalidRequestException, InvalidCredentialsException {
+    public void connect(String username, String password) throws InvalidRequestException {
         try {
             Socket socket = new Socket(this.host, this.port);
 
@@ -45,11 +44,11 @@ public class EventStreamClient {
             }
             if (response.status == 106) {
                 socket.close();
-                throw new InvalidCredentialsException();
+                throw new InvalidRequestException();
             }
             if (response.status == 107) {
                 socket.close();
-                throw new InvalidCredentialsException();
+                throw new InvalidRequestException();
             }
 
             System.out.println("Login successful!");

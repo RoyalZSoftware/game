@@ -13,11 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.royalzsoftware.eventstream.Event;
 import com.royalzsoftware.eventstream.EventBroker;
 import com.royalzsoftware.eventstream.Subscriber;
-import com.royalzsoftware.identification.Identifiable;
-import com.royalzsoftware.identification.AuthenticationRequest;
 import com.royalzsoftware.rpc.Response;
-import com.royalzsoftware.uno.UnoPlayer;
-import com.royalzsoftware.uno.events.PlayerJoinedEvent;
+import com.royalzsoftware.uno.rpcendpoints.UserRepository;
 
 public class EventStreamServer implements Runnable {
 
@@ -45,10 +42,12 @@ public class EventStreamServer implements Runnable {
         }
 
     }
+    private UserRepository userRepository;
 
-    public EventStreamServer(int port, EventBroker broker) throws IOException {
+    public EventStreamServer(int port, EventBroker broker, UserRepository userRepository) throws IOException {
         this.serverSocket = new ServerSocket(port);
         this.broker = broker;
+        this.userRepository = userRepository;
     }
 
     public void listenInThread() {
@@ -81,26 +80,10 @@ public class EventStreamServer implements Runnable {
                         continue;
                     }
 
-                    AuthenticationRequest loginRequest = AuthenticationRequest.FindLoginAttempt(parts[0]);
-
-                    if (loginRequest == null) {
-                        writer.println(mapper.writeValueAsString(new Response(106, "Login attempt not found.")));
-                        continue;
-                    }
-
-                    if (!loginRequest.checkPassword(parts[1])) {
-                        writer.println(mapper.writeValueAsString(new Response(107, "Invalid credentials")));
-                        continue;
-                    }
-
-                    Identifiable authenticatable = loginRequest.getAuthenticatable();
                     Subscriber subscriber = new PrintWriterSubscriber(writer);
-
-                    authenticatable.setSubscriber(subscriber);
+                    this.userRepository.registerSubscriber(this.userRepository.getPlayer(parts[0]).get(), subscriber);
 
                     broker.subscribe(subscriber);
-
-                    broker.publish(new PlayerJoinedEvent((UnoPlayer) authenticatable));
                     
                     writer.println(mapper.writeValueAsString(new Response(0, "OK")));
 
