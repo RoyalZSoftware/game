@@ -1,5 +1,6 @@
 import React, { useContext, useState, createContext, useEffect } from "react";
 import { callApi, CreateGameRequest, JoinGameRequest, ListGamesRequest, LoginRequest } from "./api";
+import { createConnection } from "./streaming";
 
 const apiContext = createContext();
 
@@ -7,6 +8,7 @@ function useLogin() {
     const {setToken} = useContext(apiContext);
     return async (username) => {
         await callApi(LoginRequest(username));
+        connection.login(username);
 
         setToken(username);
     }
@@ -69,6 +71,10 @@ function Guard() {
     <button onClick={() => authenticate()}>Authenticate</button>
         
 }
+
+const connection = createConnection(() => {
+
+});
 
 export function App() {
     return <ApiProvider>

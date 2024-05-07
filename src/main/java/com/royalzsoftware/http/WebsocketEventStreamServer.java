@@ -17,6 +17,15 @@ import com.royalzsoftware.rpc.Response;
 
 public class WebsocketEventStreamServer extends WebSocketServer {
 
+    class PongEvent implements Event {
+
+        @Override
+        public String getIdentifier() {
+            return "pong";
+        }
+
+    }
+
     private EventBroker broker;
 
     private List<WebSocket> known = new ArrayList<>();
@@ -33,6 +42,18 @@ public class WebsocketEventStreamServer extends WebSocketServer {
         });
 
         t.start();
+        
+        Thread keepAliveThread = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                this.broker.publish(new PongEvent());
+            }
+        });
+        keepAliveThread.start();
     }
 
     @Override
