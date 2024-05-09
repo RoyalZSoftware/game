@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, CardHeader, Heading, List, ListItem, OrderedList, UnorderedList } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { createGame, listGames } from "../data-layer";
+import { createGame, joinGame, listGames } from "../data-layer";
 import { useApiProvider } from "./api-provider";
 
 export function GameList() {
@@ -26,7 +26,7 @@ export function GameList() {
             <CardBody>
                 <UnorderedList>
                     {games.map(c => 
-                        <ListItem onClick={() => joinGame(token, c.id)}>
+                        <ListItem onClick={() => joinGame(token, c.id).then(() => fetchGames())}>
                             {c.id} - {JSON.stringify(c)}
                         </ListItem>
                     )}
