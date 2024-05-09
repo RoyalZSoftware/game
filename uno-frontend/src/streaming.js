@@ -1,9 +1,5 @@
 import { WSS_URL } from "./config";
 
-class Game extends EventTarget {
-
-}
-
 export function createConnection(onGameStateChange) {
     const socket = new WebSocket(WSS_URL);
 
